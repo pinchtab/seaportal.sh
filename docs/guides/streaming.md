@@ -7,7 +7,7 @@ SeaPortal supports Server-Sent Events (SSE) for real-time results. Instead of wa
 Add `stream: true` to any request:
 
 ```bash
-curl -N https://api.seaportal.sh/extract \
+curl -N https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -49,7 +49,7 @@ data: {"status": "complete", "totalChunks": 12}
 ## JavaScript Client
 
 ```javascript
-const response = await fetch('https://api.seaportal.sh/extract', {
+const response = await fetch('https://seaportal.sh/extract', {
   method: 'POST',
   headers: {
     'Authorization': `Bearer ${token}`,
@@ -91,7 +91,7 @@ import requests
 import json
 
 response = requests.post(
-    'https://api.seaportal.sh/extract',
+    'https://seaportal.sh/extract',
     headers={
         'Authorization': f'Bearer {token}',
         'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ for line in response.iter_lines():
 Batch requests can also stream. Results arrive as each URL completes:
 
 ```bash
-curl -N https://api.seaportal.sh/batch \
+curl -N https://seaportal.sh/batch \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

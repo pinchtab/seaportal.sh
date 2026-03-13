@@ -13,7 +13,7 @@ npm install -g seaportal
 Or use it directly with npx:
 
 ```bash
-npx seaportal extract https://example.com
+npx seaportal extract https://seaportal.sh
 ```
 
 ## Configuration
@@ -29,7 +29,7 @@ Create a `.seaportalrc` file in your project root for persistent config:
 ```json
 {
   "token": "your-token-here",
-  "baseUrl": "https://api.seaportal.sh",
+  "baseUrl": "https://seaportal.sh",
   "cache": {
     "enabled": true,
     "ttl": 3600
@@ -42,7 +42,7 @@ Create a `.seaportalrc` file in your project root for persistent config:
 Extract clean content from any URL:
 
 ```bash
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{"url": "https://example.com"}' | jq
 ```
@@ -51,7 +51,7 @@ Response:
 
 ```json
 {
-  "url": "https://example.com",
+  "url": "https://seaportal.sh",
   "title": "Example Domain",
   "content": "# Example Domain\n\nThis domain is for use in illustrative examples...",
   "tokens": 42,
@@ -66,16 +66,16 @@ The CLI wraps the API with convenient commands:
 
 ```bash
 # Extract content
-seaportal extract https://example.com
+seaportal extract https://seaportal.sh
 
 # Summarize a page
-seaportal summarize https://example.com --depth detailed
+seaportal summarize https://seaportal.sh --depth detailed
 
 # Transcribe audio/video
 seaportal transcribe https://youtube.com/watch?v=example
 
 # Stream results in real-time
-seaportal extract https://example.com --stream
+seaportal extract https://seaportal.sh --stream
 ```
 
 ## Using with AI Agents
@@ -83,7 +83,7 @@ seaportal extract https://example.com --stream
 SeaPortal is designed for AI agent workflows. Use structured JSON output for tool calls:
 
 ```bash
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{"url": "https://example.com", "format": "json"}' 
 ```

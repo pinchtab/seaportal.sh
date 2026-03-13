@@ -40,17 +40,17 @@ Override caching behavior on individual requests:
 
 ```bash
 # Skip cache entirely (always fetch fresh)
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{"url": "https://example.com", "cache": false}'
 
 # Set a custom TTL (in seconds)
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{"url": "https://example.com", "ttl": 86400}'
 
 # Force refresh (bypass cache, but update it)
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{"url": "https://example.com", "refresh": true}'
 ```
@@ -95,7 +95,7 @@ Disable caching for endpoints with real-time data.
 ### View Cache Stats
 
 ```bash
-curl -s https://api.seaportal.sh/cache/stats \
+curl -s https://seaportal.sh/cache/stats \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN"
 ```
 
@@ -114,14 +114,14 @@ curl -s https://api.seaportal.sh/cache/stats \
 
 ```bash
 # Delete by cache key (URL hash)
-curl -X DELETE https://api.seaportal.sh/cache/abc123 \
+curl -X DELETE https://seaportal.sh/cache/abc123 \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN"
 ```
 
 ### Clear All Cache
 
 ```bash
-curl -X DELETE https://api.seaportal.sh/cache \
+curl -X DELETE https://seaportal.sh/cache \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN"
 ```
 

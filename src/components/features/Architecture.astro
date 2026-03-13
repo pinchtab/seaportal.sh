@@ -15,17 +15,17 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
       {
         label: 'Extract',
         method: 'extract',
-        code: '# Extract content from a URL\ncurl -s https://api.seaportal.sh/extract?url=https://example.com',
+        code: '# Extract content from a URL\ncurl -s https://seaportal.sh/extract?url=https://example.com',
       },
       {
         label: 'Summarize',
         method: 'summarize',
-        code: '# Summarize a page\ncurl -s https://api.seaportal.sh/summarize?url=https://example.com',
+        code: '# Summarize a page\ncurl -s https://seaportal.sh/summarize?url=https://example.com',
       },
       {
         label: 'Stream',
         method: 'stream',
-        code: '# Stream extraction results\ncurl -N https://api.seaportal.sh/extract?url=https://example.com&stream=true',
+        code: '# Stream extraction results\ncurl -N https://seaportal.sh/extract?url=https://example.com&stream=true',
       },
     ]}
     defaultTab="extract"

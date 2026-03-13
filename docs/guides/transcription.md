@@ -12,7 +12,7 @@ SeaPortal can transcribe audio and video content from URLs. It supports multiple
 ## Basic Usage
 
 ```bash
-curl -s https://api.seaportal.sh/transcribe \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"url": "https://youtube.com/watch?v=example"}'
@@ -105,7 +105,7 @@ Real-time streaming transcription with speaker diarization.
 Enable word-level timestamps for precise alignment:
 
 ```bash
-curl -s https://api.seaportal.sh/transcribe \
+curl -s https://seaportal.sh/transcribe \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{
     "url": "https://example.com/video.mp4",
@@ -143,7 +143,7 @@ Supported languages depend on the provider. Whisper supports 99+ languages, Deep
 Combine transcription with SSE for real-time results:
 
 ```bash
-curl -N https://api.seaportal.sh/transcribe \
+curl -N https://seaportal.sh/transcribe \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -d '{
     "url": "https://example.com/video.mp4",

@@ -8,7 +8,7 @@ All requests require a Bearer token:
 
 ```bash
 curl -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
-  https://api.seaportal.sh/extract
+  https://seaportal.sh/extract
 ```
 
 ## Health Check
@@ -18,7 +18,7 @@ curl -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
 Returns service status. No authentication required.
 
 ```bash
-curl https://api.seaportal.sh/health
+curl https://seaportal.sh/health
 ```
 
 ```json
@@ -48,7 +48,7 @@ Extract clean, readable content from a URL. Strips navigation, ads, scripts, and
 ### Example
 
 ```bash
-curl -s https://api.seaportal.sh/extract \
+curl -s https://seaportal.sh/extract \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -94,7 +94,7 @@ Summarize content from a URL using AI. Configurable depth controls the detail le
 ### Example
 
 ```bash
-curl -s https://api.seaportal.sh/summarize \
+curl -s https://seaportal.sh/summarize \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -138,7 +138,7 @@ Transcribe audio or video content from a URL. Supports YouTube, podcast feeds, a
 ### Example
 
 ```bash
-curl -s https://api.seaportal.sh/transcribe \
+curl -s https://seaportal.sh/transcribe \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -179,7 +179,7 @@ Parse slide decks and presentations from URLs. Returns structured content with s
 ### Example
 
 ```bash
-curl -s https://api.seaportal.sh/slides \
+curl -s https://seaportal.sh/slides \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -205,7 +205,7 @@ Process multiple URLs in a single request. Each URL uses the specified operation
 ### Example
 
 ```bash
-curl -s https://api.seaportal.sh/batch \
+curl -s https://seaportal.sh/batch \
   -H "Authorization: Bearer $SEAPORTAL_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
