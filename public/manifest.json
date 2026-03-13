@@ -1,0 +1,16 @@
+{
+  "name": "SeaPortal",
+  "short_name": "SeaPortal",
+  "description": "Summarization and content extraction API. Extract, summarize, and cache web content with streaming support.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#22d3ee",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

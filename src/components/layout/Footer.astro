@@ -1,0 +1,33 @@
+---
+const footerLinks = [
+  { label: 'GitHub', href: 'https://github.com/seaportal/seaportal' },
+  { label: 'Latest Release', href: 'https://github.com/seaportal/seaportal/releases/latest' },
+  { label: 'Docs', href: '/docs' },
+  { label: 'API Reference', href: '/docs/api-reference' },
+  { label: 'Issues', href: 'https://github.com/seaportal/seaportal/issues' },
+];
+---
+
+<footer class="border-t border-brand-border-subtle px-6 py-12 sm:px-8">
+  <div class="mx-auto max-w-270 text-center">
+    <nav aria-label="Footer navigation" class="mb-5 flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+      {
+        footerLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm text-brand-text-muted transition-colors hover:text-brand-accent"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <p class="text-xs leading-6 text-brand-text-dim">
+      Built by{' '}
+      <a href="https://github.com/luigi-agosti" class="text-brand-text-dim underline-offset-2 transition-colors hover:text-brand-accent">Luigi Agosti</a>{' '}
+      · MIT License · Works with{' '}
+      <a href="https://openclaw.ai" class="text-brand-text-dim underline-offset-2 transition-colors hover:text-brand-accent">OpenClaw</a>
+    </p>
+  </div>
+</footer>

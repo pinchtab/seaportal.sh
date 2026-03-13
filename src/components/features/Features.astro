@@ -1,0 +1,73 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const features = [
+  {
+    icon: '🔗',
+    title: 'URL Extraction',
+    description: 'Extract clean, readable content from any URL. Strips navigation, ads, and clutter. Returns structured markdown.',
+  },
+  {
+    icon: '📝',
+    title: 'Summarization',
+    description: 'AI-powered summarization with configurable depth. Get key points, full summaries, or custom extractions.',
+  },
+  {
+    icon: '🎙️',
+    title: 'Transcription',
+    description: 'Transcribe audio and video content from URLs. Supports YouTube, podcasts, and direct media links.',
+  },
+  {
+    icon: '📊',
+    title: 'Slide Parsing',
+    description: 'Extract content from presentations and slide decks. Returns structured text with slide boundaries.',
+  },
+  {
+    icon: '⚡',
+    title: 'Streaming',
+    description: 'Server-sent events for real-time results. Start processing content and get results as they arrive.',
+  },
+  {
+    icon: '💾',
+    title: 'Smart Caching',
+    description: 'Built-in content caching with configurable TTL. Avoid redundant extractions and reduce latency.',
+  },
+  {
+    icon: '🔄',
+    title: 'Batch Processing',
+    description: 'Submit multiple URLs in a single request. Process entire sitemaps or link collections efficiently.',
+  },
+  {
+    icon: '🛡️',
+    title: 'Rate Limiting',
+    description: 'Respectful crawling with configurable rate limits. Built-in retry logic and backoff strategies.',
+  },
+  {
+    icon: '🤖',
+    title: 'Agent Ready',
+    description: 'Designed for AI agents. Token-efficient output, structured responses, and tool-call compatible endpoints.',
+  },
+];
+---
+
+<section id="features">
+  <SectionHeading
+    label="What It Does"
+    title="Everything your agent needs"
+    description="Extract, summarize, and cache content from any source."
+  />
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      features.map((feature) => (
+        <article class="rounded-2xl border border-brand-border-subtle bg-brand-surface p-6 transition-colors duration-200 hover:border-[rgba(34,211,238,0.4)] hover:bg-brand-surface-hover">
+          <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-accent/8 text-2xl leading-none" aria-hidden="true">
+            {feature.icon}
+          </div>
+          <h3 class="mb-2 text-base font-semibold text-brand-text">{feature.title}</h3>
+          <p class="text-sm leading-6 text-brand-text-muted">{feature.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

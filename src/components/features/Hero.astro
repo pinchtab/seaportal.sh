@@ -1,0 +1,102 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Pill from '@/components/ui/Pill.astro';
+import { cn } from '@/lib/utils';
+
+const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
+---
+
+<section
+  class={cn(
+    'relative isolate flex items-center justify-center',
+    'pt-20 pb-15 px-6 sm:px-8 overflow-hidden'
+  )}
+>
+  <!-- Hero top radial glow -->
+  <div
+    class={cn(
+      'pointer-events-none absolute left-1/2 z-0',
+      'h-215 w-215 -translate-x-1/2 rounded-full'
+    )}
+    style="top: -300px; background: radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, rgba(34, 211, 238, 0.05) 42%, transparent 72%);"
+    aria-hidden="true"
+  />
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-4xl mx-auto pt-12 text-center">
+    <!-- Icon -->
+    <div class="relative z-10 mb-6 flex justify-center">
+      <div class="flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl border border-brand-border bg-brand-surface shadow-glow">
+        <span class="text-4xl sm:text-5xl">🌊</span>
+      </div>
+    </div>
+
+    <!-- Brand name -->
+    <h1
+      class={cn(
+        'relative z-20',
+        'font-bold leading-[1.1] tracking-[-0.03em]',
+        'text-[clamp(2.8rem,6vw,4.2rem)]',
+        'mb-2'
+      )}
+    >
+      <span class="gradient-text inline-block">
+        SeaPortal
+      </span>
+    </h1>
+
+    <!-- Tagline -->
+    <div
+      class={cn('mb-5 text-base font-medium uppercase tracking-[0.15em] text-brand-accent')}
+    >
+      Content extraction & summarization API
+    </div>
+
+    <!-- Description -->
+    <p class={cn(
+      'text-[1.15rem] text-brand-text-muted leading-[1.7]',
+      'max-w-130 mx-auto mb-8'
+    )}>
+      Extract content from any URL. Summarize pages, transcribe media, parse slides. Stream results in real-time with built-in caching.
+    </p>
+
+    <!-- Feature pills -->
+    <div class="mb-9 flex flex-wrap items-center justify-center gap-2.5">
+      {
+        featurePills.map((pill) => (
+          <Pill>{pill}</Pill>
+        ))
+      }
+    </div>
+
+    <!-- CTA Buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+      <Button
+        href="https://github.com/seaportal/seaportal"
+        variant="primary"
+        size="md"
+        class={cn(
+          'w-full sm:w-auto h-12 px-7 rounded-[10px]',
+          'shadow-[0_8px_18px_rgba(34,211,238,0.22)]',
+          'hover:-translate-y-px hover:shadow-[0_12px_24px_rgba(34,211,238,0.28)]',
+          'active:translate-y-0 text-[0.9rem]'
+        )}
+      >
+        View on GitHub
+      </Button>
+      <Button
+        href="/docs"
+        variant="secondary"
+        size="md"
+        class={cn(
+          'w-full sm:w-auto h-12 px-7 rounded-[10px]',
+          'shadow-[inset_0_1px_0_rgb(255_255_255/0.03)]',
+          'hover:bg-[rgba(255,255,255,0.08)] hover:border-[rgba(15,50,72,0.8)] hover:-translate-y-px',
+          'text-[0.9rem]'
+        )}
+      >
+        Docs
+      </Button>
+    </div>
+  </div>
+</section>

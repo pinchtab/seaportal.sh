@@ -1,0 +1,112 @@
+---
+import Badge from '@/components/ui/Badge.astro';
+import Card from '@/components/ui/Card.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+interface Member {
+  name: string;
+  tagline: string;
+  avatar: string;
+  href?: string;
+}
+
+interface Group {
+  title: string;
+  badge: string;
+  members: Member[];
+}
+
+const groups: Group[] = [
+  {
+    title: 'Humans',
+    badge: 'Human led',
+    members: [
+      {
+        name: 'Luigi Agosti',
+        tagline: 'Agent Manager',
+        avatar: '/assets/luigi-avatar.png',
+        href: 'https://github.com/luigi-agosti',
+      },
+    ],
+  },
+  {
+    title: 'Agents',
+    badge: 'Agent accelerated',
+    members: [
+      {
+        name: 'Data',
+        tagline: 'Curious android, aspiring human',
+        avatar: '/assets/data-avatar.png',
+      },
+    ],
+  },
+];
+---
+
+<section id="built-by">
+  <SectionHeading
+    label="Built By"
+    title="Humans & Agents"
+    description="Started by humans, shipped faster with agents."
+  />
+
+  <div class="grid gap-4 lg:grid-cols-2">
+    {
+      groups.map((group) => (
+        <Card
+          class="rounded-2xl border-brand-border-subtle bg-brand-surface p-5 sm:p-6"
+          variant="hover"
+          padding="none"
+        >
+          <div class="mb-5 flex items-center justify-between gap-3">
+            <h3 class="text-lg font-semibold text-brand-text">{group.title}</h3>
+            <Badge variant="default" padding="sm" class="text-[0.62rem]">
+              {group.badge}
+            </Badge>
+          </div>
+
+          <div class="space-y-3">
+            {
+              group.members.map((member) => {
+                const content = (
+                  <>
+                    <img
+                      src={member.avatar}
+                      alt={member.name}
+                      width="52"
+                      height="52"
+                      loading="lazy"
+                      decoding="async"
+                      class="h-13 w-13 rounded-full border border-brand-border-subtle object-cover"
+                    />
+                    <span class="min-w-0">
+                      <span class="block text-sm font-semibold text-brand-text">{member.name}</span>
+                      <span class="block text-xs text-brand-text-muted">{member.tagline}</span>
+                    </span>
+                  </>
+                );
+
+                return (
+                  <article class="rounded-xl border border-brand-border-subtle/20 bg-brand-surface-code/35 px-3 py-3">
+                    {
+                      member.href ? (
+                        <a
+                          href={member.href}
+                          class="flex items-center gap-3 transition-colors hover:text-brand-accent"
+                        >
+                          {content}
+                        </a>
+                      ) : (
+                        <div class="flex items-center gap-3">{content}</div>
+                      )
+                    }
+                  </article>
+                );
+              })
+            }
+          </div>
+        </Card>
+      ))
+    }
+  </div>
+</section>

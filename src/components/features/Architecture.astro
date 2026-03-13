@@ -1,0 +1,34 @@
+---
+import CodeTerminal from '@/components/ui/CodeTerminal.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+---
+
+<section>
+  <SectionHeading
+    label="Architecture"
+    title="Simple by design"
+    description="One service. HTTP API. Extraction, summarization, and caching in one call."
+  />
+
+  <CodeTerminal
+    tabs={[
+      {
+        label: 'Extract',
+        method: 'extract',
+        code: '# Extract content from a URL\ncurl -s https://api.seaportal.sh/extract?url=https://example.com',
+      },
+      {
+        label: 'Summarize',
+        method: 'summarize',
+        code: '# Summarize a page\ncurl -s https://api.seaportal.sh/summarize?url=https://example.com',
+      },
+      {
+        label: 'Stream',
+        method: 'stream',
+        code: '# Stream extraction results\ncurl -N https://api.seaportal.sh/extract?url=https://example.com&stream=true',
+      },
+    ]}
+    defaultTab="extract"
+    terminalLabel="runtime"
+  />
+</section>

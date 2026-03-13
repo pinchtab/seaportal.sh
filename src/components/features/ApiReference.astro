@@ -1,0 +1,60 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const endpoints = [
+  ['GET', '/health', 'Service health check'],
+  ['GET', '/extract', 'Extract content from URL'],
+  ['GET', '/summarize', 'Summarize content from URL'],
+  ['GET', '/transcribe', 'Transcribe audio/video from URL'],
+  ['GET', '/slides', 'Parse slides from URL'],
+  ['POST', '/batch', 'Process multiple URLs'],
+  ['GET', '/cache/:key', 'Retrieve cached result'],
+  ['DELETE', '/cache/:key', 'Invalidate cached result'],
+];
+---
+
+<section id="api">
+  <SectionHeading
+    label="Full API"
+    title="Few endpoints. That's it."
+    description="GETs for extraction, POSTs for batch operations. All JSON, all streaming-capable."
+  />
+
+  <div class="overflow-x-auto rounded-2xl border border-brand-border-subtle bg-brand-surface">
+    <table class="w-full min-w-[680px] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-b border-brand-border-subtle">
+          <th class="px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Method</th>
+          <th class="px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Endpoint</th>
+          <th class="px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          endpoints.map(([method, endpoint, description], index) => (
+            <tr class={index < endpoints.length - 1 ? 'border-b border-brand-border-subtle' : ''}>
+              <td class="px-5 py-3">
+                <span
+                  class:list={[
+                    'rounded px-2 py-1 font-mono text-xs font-semibold',
+                    method === 'GET'
+                      ? 'bg-brand-green/10 text-brand-green'
+                      : method === 'DELETE'
+                        ? 'bg-brand-red/10 text-brand-red'
+                        : 'bg-brand-accent/10 text-brand-accent',
+                  ]}
+                >
+                  {method}
+                </span>
+              </td>
+              <td class="px-5 py-3 font-mono text-xs text-brand-text">
+                <code>{endpoint}</code>
+              </td>
+              <td class="px-5 py-3 text-brand-text-muted">{description}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

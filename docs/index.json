@@ -1,0 +1,9 @@
+{
+  "getting-started": ["getting-started.md"],
+  "api": ["api/endpoints.md"],
+  "guides": [
+    "guides/streaming.md",
+    "guides/caching.md",
+    "guides/transcription.md"
+  ]
+}

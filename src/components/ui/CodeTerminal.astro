@@ -1,0 +1,199 @@
+---
+import { cn } from '@/lib/utils';
+
+export interface CodeTab {
+  label: string;
+  method: string;
+  code: string;
+}
+
+export interface Props {
+  tabs: CodeTab[];
+  defaultTab?: string;
+  class?: string;
+  terminalLabel?: string;
+  showTabs?: boolean;
+}
+
+const {
+  tabs,
+  defaultTab = tabs[0]?.method || 'default',
+  class: className,
+  terminalLabel = 'terminal',
+  showTabs = true,
+} = Astro.props;
+---
+
+<div
+  class={cn(
+    'my-6 overflow-hidden rounded-2xl border border-brand-border-subtle bg-brand-surface-code shadow-glow',
+    className
+  )}
+  data-code-terminal
+  data-default-method={defaultTab}
+>
+  <div class="flex h-12 items-center gap-4 border-b border-brand-border-subtle bg-[rgba(0,0,0,0.35)] px-5">
+    <div class="flex gap-2">
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-red" aria-hidden="true"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-accent" aria-hidden="true"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-green" aria-hidden="true"></span>
+    </div>
+
+    {
+      showTabs && (
+        <div class="ml-1 flex flex-wrap gap-2">
+          {
+            tabs.map((tab) => (
+              <button
+                type="button"
+                class={cn(
+                  'code-tab rounded-md border px-2.5 py-1 text-xs font-semibold transition-all duration-150',
+                  tab.method === defaultTab
+                    ? 'border-brand-accent bg-brand-accent text-black'
+                    : 'border-brand-border-subtle text-brand-text-muted hover:border-brand-border hover:text-brand-text'
+                )}
+                data-method={tab.method}
+              >
+                {tab.label}
+              </button>
+            ))
+          }
+        </div>
+      )
+    }
+
+    <span class="ml-auto text-xs uppercase tracking-[0.12em] text-brand-text-dim">
+      {terminalLabel}
+    </span>
+  </div>
+
+  <div class="relative px-6 py-5">
+    {
+      tabs.map((tab) => {
+        const lines = tab.code.split('\n');
+        return (
+          <pre
+            class={cn(
+              'code-terminal-section overflow-x-auto whitespace-pre-wrap pb-10 font-mono text-[0.82rem] leading-[1.8] text-brand-text-muted',
+              'm-0 border-0 bg-transparent p-0 text-left shadow-none',
+              tab.method !== defaultTab && 'hidden'
+            )}
+            data-method={tab.method}
+          >{lines.map((line) => {
+            const isComment = line.trim().startsWith('#');
+            return <span class={cn('block', isComment ? 'text-brand-text-dim' : 'text-brand-accent')} data-code-line data-is-comment={isComment ? 'true' : 'false'}>{line}</span>;
+          })}</pre>
+        );
+      })
+    }
+
+    <button
+      type="button"
+      class={cn(
+        'copy-btn absolute bottom-3 right-3 rounded border px-2.5 py-1 text-xs font-semibold transition-colors',
+        'border-brand-accent bg-brand-accent text-black',
+        'hover:bg-brand-accent-light'
+      )}
+      data-copy-btn
+      title="Copy active command"
+    >
+      CP
+    </button>
+  </div>
+
+  <slot name="footer" />
+</div>
+
+<script is:inline>
+  (() => {
+    const roots = Array.from(document.querySelectorAll('[data-code-terminal]'));
+    if (!roots.length) return;
+
+    const activeTabClasses = ['border-brand-accent', 'bg-brand-accent', 'text-black'];
+    const inactiveTabClasses = ['border-brand-border-subtle', 'text-brand-text-muted'];
+
+    roots.forEach((root) => {
+      const tabs = Array.from(root.querySelectorAll('.code-tab'));
+      const sections = Array.from(root.querySelectorAll('.code-terminal-section'));
+      const copyButton = root.querySelector('[data-copy-btn]');
+      const fallbackMethod = root.getAttribute('data-default-method') || sections[0]?.dataset.method || '';
+
+      const resolveMethod = (method) => {
+        if (sections.some((section) => section.dataset.method === method)) {
+          return method;
+        }
+        return fallbackMethod;
+      };
+
+      const setActiveTab = (method) => {
+        const activeMethod = resolveMethod(method);
+        root.dataset.activeMethod = activeMethod;
+
+        tabs.forEach((tab) => {
+          const isActive = tab.dataset.method === activeMethod;
+          tab.classList.toggle('hover:border-brand-border', !isActive);
+          tab.classList.toggle('hover:text-brand-text', !isActive);
+          activeTabClasses.forEach((className) => tab.classList.toggle(className, isActive));
+          inactiveTabClasses.forEach((className) => tab.classList.toggle(className, !isActive));
+        });
+
+        sections.forEach((section) => {
+          section.classList.toggle('hidden', section.dataset.method !== activeMethod);
+        });
+      };
+
+      setActiveTab(fallbackMethod);
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          if (!tab.dataset.method) return;
+          setActiveTab(tab.dataset.method);
+        });
+      });
+
+      if (copyButton) {
+        copyButton.addEventListener('click', () => {
+          const activeMethod = root.dataset.activeMethod || fallbackMethod;
+          const activeSection = activeMethod
+            ? root.querySelector(`.code-terminal-section[data-method="${activeMethod}"]`)
+            : root.querySelector('.code-terminal-section:not(.hidden)');
+          if (!activeSection) return;
+
+          const command = Array.from(activeSection.querySelectorAll('[data-code-line]'))
+            .filter((line) => line.getAttribute('data-is-comment') !== 'true')
+            .map((line) => line.textContent || '')
+            .join('\n')
+            .trim();
+
+          if (!command) return;
+
+          const showCopied = () => {
+            copyButton.textContent = 'OK';
+            copyButton.classList.remove('bg-brand-accent', 'hover:bg-brand-accent-light');
+            copyButton.classList.add('bg-brand-green', 'border-brand-green');
+
+            setTimeout(() => {
+              copyButton.textContent = 'CP';
+              copyButton.classList.remove('bg-brand-green', 'border-brand-green');
+              copyButton.classList.add('bg-brand-accent', 'hover:bg-brand-accent-light');
+            }, 1400);
+          };
+
+          navigator.clipboard.writeText(command)
+            .then(showCopied)
+            .catch(() => {
+              copyButton.textContent = 'ERR';
+              copyButton.classList.remove('bg-brand-accent', 'hover:bg-brand-accent-light');
+              copyButton.classList.add('border-brand-red', 'bg-brand-red');
+
+              setTimeout(() => {
+                copyButton.textContent = 'CP';
+                copyButton.classList.remove('border-brand-red', 'bg-brand-red');
+                copyButton.classList.add('bg-brand-accent', 'hover:bg-brand-accent-light');
+              }, 1400);
+            });
+        });
+      }
+    });
+  })();
+</script>

@@ -1,0 +1,68 @@
+---
+import DocsSidebar from './DocsSidebar.astro';
+import DocsToc from './DocsToc.astro';
+import DocsRenderer from '@/components/docs/DocsRenderer.astro';
+import type { DocsData, DocsPage } from '@/lib/docs/types';
+
+export interface Props {
+  docsData: DocsData;
+  currentPage: DocsPage;
+}
+
+const { docsData, currentPage } = Astro.props;
+---
+
+<div class="w-full px-4 py-8 sm:px-6 lg:px-8">
+  <div class="mx-auto w-full max-w-[1720px]">
+    <div class="grid gap-8 xl:grid-cols-[240px_minmax(0,1fr)_220px]">
+
+      <DocsSidebar docsData={docsData} currentPage={currentPage} />
+
+      <article class="min-w-0">
+        <div class="p-4 sm:p-8 xl:px-16 max-w-4xl mx-auto">
+          <DocsRenderer blocks={currentPage.blocks} />
+        </div>
+      </article>
+
+      <DocsToc headings={currentPage.headings} />
+
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const terminalContainers = Array.from(document.querySelectorAll('[data-docs-terminal]'));
+    terminalContainers.forEach((container) => {
+      const copyBtn = container.querySelector('[data-copy-terminal]');
+      const terminalContent = container.querySelector('[data-terminal-content]');
+      if (!copyBtn || !terminalContent) return;
+
+      copyBtn.addEventListener('click', () => {
+        const lines = Array.from(terminalContent.querySelectorAll('span[data-is-comment]'));
+        let textToCopy = '';
+        if (lines.length > 0) {
+          textToCopy = lines
+            .filter((l) => l.getAttribute('data-is-comment') !== 'true')
+            .map((l) => l.textContent || '')
+            .join('\n')
+            .trim();
+        } else {
+          textToCopy = terminalContent.textContent || '';
+        }
+
+        if (!textToCopy) return;
+
+        navigator.clipboard.writeText(textToCopy).then(() => {
+          const originalText = copyBtn.textContent;
+          copyBtn.textContent = 'COPIED';
+          copyBtn.classList.add('bg-brand-accent/20', 'text-brand-accent-light');
+          setTimeout(() => {
+            copyBtn.textContent = originalText;
+            copyBtn.classList.remove('bg-brand-accent/20', 'text-brand-accent-light');
+          }, 2000);
+        });
+      });
+    });
+  })();
+</script>

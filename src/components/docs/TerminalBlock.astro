@@ -1,0 +1,61 @@
+---
+export interface Props {
+  code: string;
+  response?: string;
+}
+
+const { code, response } = Astro.props;
+
+const formattedResponse = (() => {
+  if (!response) return null;
+  try {
+    return JSON.stringify(JSON.parse(response), null, 2);
+  } catch {
+    return response;
+  }
+})();
+---
+
+<div
+  class="my-7 overflow-hidden rounded-2xl border border-brand-border-subtle bg-brand-surface-code shadow-glow"
+  data-docs-terminal
+>
+  <div class="flex h-12 items-center gap-4 border-b border-brand-border-subtle bg-[rgba(0,0,0,0.35)] px-5">
+    <div class="flex gap-2">
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-red" aria-hidden="true"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-accent" aria-hidden="true"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-brand-green" aria-hidden="true"></span>
+    </div>
+    <span class="ml-auto text-xs uppercase tracking-[0.12em] text-brand-text-dim">
+      terminal
+    </span>
+  </div>
+
+  <div class="relative px-6 py-5">
+    <pre
+      class="code-terminal-section m-0 overflow-x-auto whitespace-pre-wrap font-mono text-[0.82rem] leading-[1.8] text-brand-text-muted border-0 bg-transparent p-0 text-left shadow-none"
+      data-terminal-content
+    >{code}</pre>
+
+    <button
+      type="button"
+      class="copy-btn absolute bottom-3 right-3 rounded border px-2.5 py-1 text-xs font-semibold transition-colors border-brand-accent bg-brand-accent text-black hover:bg-brand-accent-light"
+      data-copy-terminal
+      title="Copy command"
+    >
+      CP
+    </button>
+  </div>
+
+  {
+    formattedResponse && (
+      <div class="border-t border-brand-border-subtle/10 px-6 py-5">
+        <div class="mb-3 flex items-center gap-2">
+          <div class="h-1.5 w-1.5 rounded-full bg-brand-green/50"></div>
+          <span class="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-brand-text-dim">Response</span>
+        </div>
+        <pre class="code-terminal-section m-0 overflow-x-auto whitespace-pre-wrap border-0 bg-transparent p-0 text-left font-mono text-[0.78rem] leading-[1.65] text-brand-text-muted shadow-none"><code>{formattedResponse}</code></pre>
+      </div>
+    )
+  }
+</div>

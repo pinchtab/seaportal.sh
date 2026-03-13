@@ -1,0 +1,28 @@
+---
+import CodeTerminal from '@/components/ui/CodeTerminal.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+---
+
+<section id="quickstart">
+  <SectionHeading
+    label="Quick Start"
+    title="Up and running in seconds"
+    description="Install, point at a URL, get structured content back. Works with any AI agent or directly via curl."
+  />
+
+  <CodeTerminal
+    tabs={[
+      {
+        label: 'npm',
+        method: 'npm',
+        code: '# Install via npm\nnpm install -g seaportal',
+      },
+      {
+        label: 'curl',
+        method: 'curl',
+        code: '# Extract content from a URL\ncurl -s https://api.seaportal.sh/extract?url=https://example.com',
+      },
+    ]}
+    defaultTab="npm"
+  />
+</section>

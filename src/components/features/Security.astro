@@ -1,0 +1,40 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const checks = [
+  'Set SEAPORTAL_TOKEN to authenticate API requests.',
+  'Rate limiting is enabled by default — configure per your needs.',
+  'Cached content is stored locally. Configure TTL and storage location.',
+  'No content leaves your infrastructure unless you configure external storage.',
+  'Use SEAPORTAL_ALLOWED_DOMAINS to restrict which URLs can be extracted.',
+  'All responses are sanitized — no script injection in extracted content.',
+  'Start with test URLs before pointing at production content.',
+];
+---
+
+<section id="security">
+  <SectionHeading
+    label="Security"
+    title="Your content, your control"
+    description="SeaPortal runs on your infrastructure. All content stays local by default."
+  />
+
+  <div class="rounded-2xl border border-brand-border bg-brand-accent/6 p-5 sm:p-7">
+    <p class="mb-4 text-sm leading-7 text-brand-text-muted">
+      SeaPortal extracts content from URLs you specify. Authentication tokens, rate limits, and domain allowlists keep your instance secure.
+    </p>
+    <ul class="space-y-2">
+      {
+        checks.map((check) => (
+          <li class="relative pl-5 text-sm leading-6 text-brand-text-muted">
+            <span class="absolute left-0 top-0 text-brand-accent">→</span>
+            {check}
+          </li>
+        ))
+      }
+    </ul>
+    <p class="mt-4 text-xs text-brand-text-dim">
+      Think of this as a controlled gateway between external content and your AI agents.
+    </p>
+  </div>
+</section>

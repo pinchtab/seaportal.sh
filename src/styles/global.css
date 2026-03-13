@@ -1,0 +1,181 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
+
+/* ===========================
+   SeaPortal — Deep ocean + cyan glow
+   =========================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000000;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(34, 211, 238, 0.9);
+  color: #000;
+}
+
+::-moz-selection {
+  background-color: rgba(34, 211, 238, 0.9);
+  color: #000;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:not([class]) {
+  color: #22d3ee;
+}
+
+a:not([class]):hover {
+  color: #67e8f9;
+}
+
+/* ===========================
+   Headings
+   =========================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+h1 {
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+/* ===========================
+   Code & Terminal
+   =========================== */
+
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-size: 0.85em;
+  background-color: rgba(34, 211, 238, 0.10);
+  color: #67e8f9;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+pre code {
+  font-size: inherit;
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+  border-radius: 0;
+}
+
+pre:not(.code-terminal-section) {
+  background-color: #020b14;
+  border: 1px solid rgba(15, 50, 72, 0.4);
+  border-radius: 16px;
+  overflow-x: auto;
+  padding: 1.5rem;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  scrollbar-width: thin;
+  scrollbar-color: #0a2333 rgba(0, 0, 0, 0.45);
+}
+
+pre:not(.code-terminal-section)::-webkit-scrollbar {
+  height: 6px;
+}
+
+pre:not(.code-terminal-section)::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 9999px;
+}
+
+pre:not(.code-terminal-section)::-webkit-scrollbar-thumb {
+  background: #0a2333;
+  border-radius: 9999px;
+}
+
+pre:not(.code-terminal-section)::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.9);
+}
+
+.code-terminal-section {
+  scrollbar-width: thin;
+  scrollbar-color: #0a2333 rgba(0, 0, 0, 0.45);
+}
+
+.code-terminal-section::-webkit-scrollbar {
+  height: 6px;
+}
+
+.code-terminal-section::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.45);
+  border-radius: 9999px;
+}
+
+.code-terminal-section::-webkit-scrollbar-thumb {
+  background: #0a2333;
+  border-radius: 9999px;
+}
+
+.code-terminal-section::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.9);
+}
+
+/* ===========================
+   Section defaults
+   =========================== */
+
+section {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 72px 24px;
+}
+
+/* ===========================
+   Container utilities
+   =========================== */
+
+@layer utilities {
+  .container-custom {
+    @apply w-full max-w-5xl mx-auto px-6 sm:px-8 lg:px-10;
+  }
+
+  .section-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #22d3ee;
+  }
+
+  .glow {
+    box-shadow: 0 0 40px rgba(34, 211, 238, 0.12);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #22d3ee, #67e8f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
