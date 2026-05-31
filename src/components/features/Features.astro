@@ -3,58 +3,63 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
 
 const features = [
   {
-    icon: '🔗',
-    title: 'URL Extraction',
-    description: 'Extract clean, readable content from any URL. Strips navigation, ads, and clutter. Returns structured markdown.',
+    icon: '🧹',
+    title: 'Clean extraction',
+    description: 'Readable Markdown with nav, ads, and chrome removed — plus block and simhash near-duplicate dedupe.',
   },
   {
-    icon: '📝',
-    title: 'Summarization',
-    description: 'AI-powered summarization with configurable depth. Get key points, full summaries, or custom extractions.',
-  },
-  {
-    icon: '🎙️',
-    title: 'Transcription',
-    description: 'Transcribe audio and video content from URLs. Supports YouTube, podcasts, and direct media links.',
-  },
-  {
-    icon: '📊',
-    title: 'Slide Parsing',
-    description: 'Extract content from presentations and slide decks. Returns structured text with slide boundaries.',
+    icon: '🌳',
+    title: 'Accessibility snapshot',
+    description: 'A semantic tree of the page where every node has a role, ref, and selector. Filter to interactive elements only.',
   },
   {
     icon: '⚡',
-    title: 'Streaming',
-    description: 'Server-sent events for real-time results. Start processing content and get results as they arrive.',
+    title: 'HTTP-first, no browser',
+    description: 'No headless overhead. On reachable static / SSR pages, extraction is typically p50 ~1s (50-site in-niche sweep — see Reliability).',
   },
   {
-    icon: '💾',
-    title: 'Smart Caching',
-    description: 'Built-in content caching with configurable TTL. Avoid redundant extractions and reduce latency.',
+    icon: '🧭',
+    title: 'Knows its limits',
+    description: 'A fail-over triage, not a universal fetcher: it emits a browser-recommendation signal so you can route hard pages elsewhere.',
   },
   {
-    icon: '🔄',
-    title: 'Batch Processing',
-    description: 'Submit multiple URLs in a single request. Process entire sitemaps or link collections efficiently.',
+    icon: '🗺️',
+    title: 'Sitemaps & feeds',
+    description: 'Flatten sitemap.xml (recurses indexes, auto-decompresses .gz) and parse RSS, Atom, and JSON Feed.',
+  },
+  {
+    icon: '🔌',
+    title: 'MCP server',
+    description: 'Run seaportal mcp to expose fetch_url, fetch_snapshot, parse_sitemap, and parse_feed as agent tools over stdio.',
   },
   {
     icon: '🛡️',
-    title: 'Rate Limiting',
-    description: 'Respectful crawling with configurable rate limits. Built-in retry logic and backoff strategies.',
+    title: 'Safe by default',
+    description: 'SSRF / private-IP blocking, http(s)-only, and redirect and response-body caps applied out of the box.',
   },
   {
-    icon: '🤖',
-    title: 'Agent Ready',
-    description: 'Designed for AI agents. Token-efficient output, structured responses, and tool-call compatible endpoints.',
+    icon: '📦',
+    title: 'CLI · library · MCP',
+    description: 'One Go binary, or import github.com/pinchtab/seaportal and call FromURL directly. Same engine everywhere.',
   },
+];
+
+// Secondary capabilities — layered on top of the core fetch-and-extract primitive.
+const advanced = [
+  'BM25 relevance scoring (--query / --top-n)',
+  'Token-capped output (--max-tokens)',
+  'Structural chunking',
+  'Split output',
+  'TEI-Lite export',
+  'seabench eval harness',
 ];
 ---
 
 <section id="features">
   <SectionHeading
     label="What It Does"
-    title="Everything your agent needs"
-    description="Extract, summarize, and cache content from any source."
+    title="Built for agents, not browsers"
+    description="Fast, structured extraction you can drop straight into an agent loop."
   />
 
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -69,5 +74,27 @@ const features = [
         </article>
       ))
     }
+  </div>
+
+  <p class="mt-4 text-sm leading-6 text-brand-text-dim">
+    Latency figures come from committed live sweeps — a 50-site in-niche sample and the Tranco top-1000. See the
+    <a href="/docs/reliability" class="text-brand-accent underline-offset-2 hover:underline">Reliability snapshot</a>
+    for the full p50 / p90 / p95 breakdown and method.
+  </p>
+
+  <div class="mt-8 rounded-2xl border border-brand-border-subtle bg-brand-surface p-6">
+    <h3 class="mb-1 text-base font-semibold text-brand-text">Advanced, when you need it</h3>
+    <p class="mb-4 text-sm leading-6 text-brand-text-muted">
+      The core stays a fast, no-browser fetch-and-extract primitive. These build on top of it — reach for them only when a pipeline calls for it.
+    </p>
+    <ul class="flex flex-wrap gap-2">
+      {
+        advanced.map((item) => (
+          <li class="rounded-md border border-brand-border-subtle bg-brand-surface-code px-2.5 py-1 font-mono text-xs text-brand-text-muted">
+            {item}
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>

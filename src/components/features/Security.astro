@@ -2,39 +2,38 @@
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 
 const checks = [
-  'Set SEAPORTAL_TOKEN to authenticate API requests.',
-  'Rate limiting is enabled by default — configure per your needs.',
-  'Cached content is stored locally. Configure TTL and storage location.',
-  'No content leaves your infrastructure unless you configure external storage.',
-  'Use SEAPORTAL_ALLOWED_DOMAINS to restrict which URLs can be extracted.',
-  'All responses are sanitized — no script injection in extracted content.',
-  'Start with test URLs before pointing at production content.',
+  ['--block-private-ips', 'On by default. Targets resolving to private or internal IPs are rejected — an SSRF guard for agents fed untrusted URLs.'],
+  ['http / https only', 'Other schemes are refused before a request is ever made.'],
+  ['--max-redirects 10', 'Redirects are capped and each hop is re-validated against the policy.'],
+  ['--max-response-bytes', 'Raw body capped at 50 MB; decompressed body at 200 MB — defuses decompression bombs.'],
+  ['--allow-domains / --deny-domains', 'Restrict reachable hosts with suffix-match allow/deny lists. Deny always wins.'],
+  ['--allow-internal', 'Explicit escape hatch to reach localhost or a private host — off unless you ask for it.'],
 ];
 ---
 
 <section id="security">
   <SectionHeading
     label="Security"
-    title="Your content, your control"
-    description="SeaPortal runs on your infrastructure. All content stays local by default."
+    title="Safe by default"
+    description="SeaPortal runs locally — there is no server to lock down. The fetch path itself ships hardened, and you loosen it only for targets you trust."
   />
 
   <div class="rounded-2xl border border-brand-border bg-brand-accent/6 p-5 sm:p-7">
     <p class="mb-4 text-sm leading-7 text-brand-text-muted">
-      SeaPortal extracts content from URLs you specify. Authentication tokens, rate limits, and domain allowlists keep your instance secure.
+      The CLI and MCP server apply <code class="font-mono text-brand-text">DefaultSecurityPolicy()</code> on every run — SSRF and private-IP blocking, scheme restrictions, and redirect and body caps — so an agent pointing it at a hostile URL can't be turned against your network. Go library callers opt in for untrusted URLs by setting <code class="font-mono text-brand-text">Options.Security</code>.
     </p>
-    <ul class="space-y-2">
+    <ul class="space-y-3">
       {
-        checks.map((check) => (
+        checks.map(([flag, detail]) => (
           <li class="relative pl-5 text-sm leading-6 text-brand-text-muted">
             <span class="absolute left-0 top-0 text-brand-accent">→</span>
-            {check}
+            <code class="font-mono text-brand-text">{flag}</code> — {detail}
           </li>
         ))
       }
     </ul>
     <p class="mt-4 text-xs text-brand-text-dim">
-      Think of this as a controlled gateway between external content and your AI agents.
+      See <a href="https://github.com/pinchtab/seaportal/blob/main/SECURITY.md" class="text-brand-text-dim underline-offset-2 transition-colors hover:text-brand-accent">SECURITY.md</a> for the full threat model and coverage caveats (e.g. <code class="font-mono">--proxy</code> and <code class="font-mono">--snapshot</code> have narrower checks).
     </p>
   </div>
 </section>

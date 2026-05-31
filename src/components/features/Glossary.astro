@@ -1,0 +1,41 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const terms = [
+  {
+    term: 'HTTP-first',
+    plain: 'SeaPortal fetches a page over plain HTTP and never launches a browser. That makes it fast and cheap on static and server-rendered pages — and means it does not run JavaScript.',
+  },
+  {
+    term: 'Accessibility snapshot',
+    plain: 'A JSON tree of the page where every element has a role, a stable ref (e1, e2…), and a CSS selector — so an agent can point at a specific button or field instead of parsing raw text.',
+  },
+  {
+    term: 'Browser-needed signal',
+    plain: 'On each fetch SeaPortal classifies the page and emits profile.decision and browserRecommended. When a page truly needs rendering, it tells you so you can route it to a browser.',
+  },
+  {
+    term: 'MCP server',
+    plain: 'Model Context Protocol — run "seaportal mcp" to expose fetch_url, fetch_snapshot, parse_sitemap, and parse_feed as tools an MCP-aware agent can call over stdio.',
+  },
+];
+---
+
+<section id="glossary">
+  <SectionHeading
+    label="Plain Language"
+    title="The terms, decoded"
+    description="A quick decoder for the jargon used across this page and the docs."
+  />
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    {
+      terms.map((entry) => (
+        <article class="rounded-2xl border border-brand-border-subtle bg-brand-surface p-6">
+          <h3 class="mb-2 font-mono text-sm font-semibold text-brand-accent">{entry.term}</h3>
+          <p class="text-sm leading-6 text-brand-text-muted">{entry.plain}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

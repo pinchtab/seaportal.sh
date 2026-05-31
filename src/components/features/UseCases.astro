@@ -1,0 +1,53 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const useCases = [
+  {
+    icon: '🧭',
+    title: 'Agent URL triage',
+    description: 'Hand an agent a URL and get clean content back fast — plus a clear signal when the page needs a real browser, so the agent can route instead of stalling.',
+  },
+  {
+    icon: '📚',
+    title: 'RAG & docs ingestion',
+    description: 'Turn documentation, articles, and knowledge bases into clean Markdown with dedupe and BM25 section scoring — ready to chunk and embed.',
+  },
+  {
+    icon: '🗺️',
+    title: 'Sitemap & feed discovery',
+    description: 'Flatten a sitemap.xml (recursing indexes) or parse an RSS / Atom / JSON feed to enumerate what to fetch next — in one command.',
+  },
+  {
+    icon: '🛡️',
+    title: 'Safe untrusted-URL fetching',
+    description: 'Point it at URLs you do not control with SSRF / private-IP blocking, http(s)-only, and redirect and body caps on by default.',
+  },
+  {
+    icon: '🔀',
+    title: 'Browser fallback routing',
+    description: 'Use SeaPortal as the cheap first hop and branch on profile.decision / browserRecommended to escalate only the hard pages to a browser like PinchTab.',
+  },
+];
+---
+
+<section id="use-cases">
+  <SectionHeading
+    label="Use Cases"
+    title="Where it fits"
+    description="A fast, no-browser fetch-and-extract primitive for agent and ingestion pipelines."
+  />
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      useCases.map((useCase) => (
+        <article class="rounded-2xl border border-brand-border-subtle bg-brand-surface p-6 transition-colors duration-200 hover:border-[rgba(34,211,238,0.4)] hover:bg-brand-surface-hover">
+          <div class="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-brand-accent/8 text-2xl leading-none" aria-hidden="true">
+            {useCase.icon}
+          </div>
+          <h3 class="mb-2 text-base font-semibold text-brand-text">{useCase.title}</h3>
+          <p class="text-sm leading-6 text-brand-text-muted">{useCase.description}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>

@@ -1,0 +1,46 @@
+---
+import CodeTerminal from '@/components/ui/CodeTerminal.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const routing = [
+  '# Fetch once as JSON, then route on the profile',
+  'result=$(seaportal --json "$url")',
+  'decision=$(echo "$result" | jq -r \'.profile.decision\')',
+  '',
+  '# profile.browserRecommended is the single boolean to branch on;',
+  '# profile.decision is the detailed category behind it.',
+  'case "$decision" in',
+  '  static-high-confidence|static-ok)',
+  '    # Clean extraction — hand result.content straight to the agent',
+  '    ;;',
+  '  browser-needed|blocked)',
+  '    # Escalate to a real browser such as PinchTab',
+  '    pinchtab open "$url"',
+  '    ;;',
+  '  *)',
+  '    # not-found | unreachable | unsupported — skip or report',
+  '    ;;',
+  'esac',
+].join('\n');
+---
+
+<section id="integration">
+  <SectionHeading
+    label="Integration"
+    title="Wire it into an agent loop"
+    description="Use SeaPortal as the cheap first hop, then escalate only the hard pages. Every fetch carries a routing decision so the agent never has to guess."
+  />
+
+  <CodeTerminal
+    tabs={[{ label: 'route', method: 'route', code: routing }]}
+    defaultTab="route"
+    showTabs={false}
+    terminalLabel="agent loop"
+  />
+
+  <p class="mt-4 text-sm leading-6 text-brand-text-dim">
+    See the
+    <a href="/docs/browser-discriminator" class="text-brand-accent underline-offset-2 hover:underline">browser discriminator</a>
+    reference for every <code class="font-mono text-brand-text">profile.decision</code> value and exactly when each is emitted.
+  </p>
+</section>

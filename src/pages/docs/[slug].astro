@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/components/layout/BaseLayout.astro';
 import DocsShell from '@/components/features/DocsShell.astro';
-import { getDocsData, type DocsData, type DocsPage } from '@/lib/docs';
+import { getDocsData, summarizeMarkdown, type DocsData, type DocsPage } from '@/lib/docs';
 
 interface Props {
   docsData: DocsData;
@@ -23,7 +23,8 @@ export async function getStaticPaths() {
 
 const { docsData, currentPage } = Astro.props as Props;
 const pageTitle = `${currentPage.title} | ${docsData.name} Docs`;
-const pageDescription = `Documentation page for ${currentPage.title}.`;
+const pageDescription =
+  summarizeMarkdown(currentPage.content) || `Documentation page for ${currentPage.title}.`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} ogType="article">

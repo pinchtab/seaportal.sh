@@ -1,0 +1,12 @@
+# Bun configuration — https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Supply-chain defense: only install package versions that have been
+# public for at least this many seconds. A compromised release is
+# usually yanked within hours, so a cooldown avoids pulling a freshly
+# published malicious version before the ecosystem reacts.
+# 259200 = 3 days.
+minimumReleaseAge = 259200
+
+# Packages exempt from the cooldown (add ones you must update immediately).
+# minimumReleaseAgeExcludes = []

@@ -76,7 +76,7 @@ Complete docs pipeline:
 - Code block transformations (terminal, ASCII diagrams)
 - Link rewriting for internal docs
 - Local docs support for development
-- Remote docs support (configured for seaportal/seaportal repo)
+- Remote docs support (configured for pinchtab/seaportal repo)
 
 **Docs Structure:**
 - Getting Started guide
@@ -171,7 +171,7 @@ seaportal.sh/
    git init
    git add .
    git commit -m "Initial commit: SeaPortal website"
-   git remote add origin https://github.com/seaportal/seaportal.sh
+   git remote add origin https://github.com/pinchtab/seaportal.sh
    git push -u origin main
    ```
 
@@ -186,7 +186,7 @@ seaportal.sh/
 
 4. **Update Remote Docs:**
    - Change `USE_LOCAL_DOCS = false` in `src/lib/docs/config.ts`
-   - Site will fetch docs from seaportal/seaportal repo on build
+   - Site will fetch docs from pinchtab/seaportal repo on build
 
 ## Documentation Customization
 

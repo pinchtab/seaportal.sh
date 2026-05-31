@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button.astro';
 import Pill from '@/components/ui/Pill.astro';
 import { cn } from '@/lib/utils';
 
-const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
+const featurePills = ['Go', 'No browser', 'MCP server', 'MIT licensed'];
 ---
 
 <section
@@ -49,7 +49,7 @@ const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
     <div
       class={cn('mb-5 text-base font-medium uppercase tracking-[0.15em] text-brand-accent')}
     >
-      Content extraction & summarization API
+      Fast content extraction for AI agents
     </div>
 
     <!-- Description -->
@@ -57,7 +57,7 @@ const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
       'text-[1.15rem] text-brand-text-muted leading-[1.7]',
       'max-w-130 mx-auto mb-8'
     )}>
-      Extract content from any URL. Summarize pages, transcribe media, parse slides. Stream results in real-time with built-in caching.
+      Turn static and server-rendered pages into clean Markdown or a semantic accessibility tree your agent can act on. HTTP-first and browserless — fast on the pages that allow it, and it tells you when one actually needs a browser. Use it as a CLI, a Go library, or an MCP server.
     </p>
 
     <!-- Feature pills -->
@@ -72,7 +72,7 @@ const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
     <!-- CTA Buttons -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5">
       <Button
-        href="https://github.com/seaportal/seaportal"
+        href="https://github.com/pinchtab/seaportal"
         variant="primary"
         size="md"
         class={cn(
@@ -98,5 +98,23 @@ const featurePills = ['TypeScript', 'Streaming', 'Caching', 'MIT license'];
         Docs
       </Button>
     </div>
+
+    <!-- Fastest path to value: install + run in one line -->
+    <div class="mt-6 flex justify-center">
+      <code
+        class={cn(
+          'inline-block max-w-full overflow-x-auto whitespace-nowrap',
+          'rounded-lg border border-brand-border bg-brand-surface',
+          'px-4 py-2.5 font-mono text-[0.82rem] text-brand-text-muted'
+        )}
+      >
+        <span class="select-none text-brand-text-dim">$ </span>npm install -g seaportal &amp;&amp; seaportal https://example.com
+      </code>
+    </div>
+
+    <!-- Honest boundary, stated up front -->
+    <p class="mx-auto mt-5 max-w-130 text-sm leading-6 text-brand-text-dim">
+      It does not execute JavaScript, render pages, or manage sessions — by design. When a page needs any of that, SeaPortal tells you instead of guessing.
+    </p>
   </div>
 </section>
