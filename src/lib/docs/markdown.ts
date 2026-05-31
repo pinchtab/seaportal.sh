@@ -1,8 +1,8 @@
-import { createMarkdownProcessor, type MarkdownProcessor } from '@astrojs/markdown-remark';
+import { createMarkdownProcessor, type MarkdownRenderer } from '@astrojs/markdown-remark';
 
-let markdownProcessorPromise: Promise<MarkdownProcessor> | undefined;
+let markdownProcessorPromise: Promise<MarkdownRenderer> | undefined;
 
-export function getMarkdownProcessor(): Promise<MarkdownProcessor> {
+export function getMarkdownProcessor(): Promise<MarkdownRenderer> {
   if (!markdownProcessorPromise) {
     markdownProcessorPromise = createMarkdownProcessor({
       syntaxHighlight: false,
