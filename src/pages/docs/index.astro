@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/components/layout/BaseLayout.astro';
 import DocsShell from '@/components/features/DocsShell.astro';
-import { getDocsData } from '@/lib/docs';
+import { getDocsData, summarizeMarkdown } from '@/lib/docs';
 
 const docsData = await getDocsData();
 const defaultSlug = docsData.firstSlug;
@@ -16,7 +16,8 @@ if (!currentPage) {
 }
 
 const pageTitle = `${currentPage.title} | ${docsData.name} Docs`;
-const pageDescription = `Documentation page for ${currentPage.title}.`;
+const pageDescription =
+  summarizeMarkdown(currentPage.content) || `Documentation page for ${currentPage.title}.`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription} ogType="article">

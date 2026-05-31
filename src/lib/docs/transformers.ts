@@ -196,23 +196,84 @@ export function transformDocsImageSources(html: string, sourceUrl: string): stri
   });
 }
 
-export function transformDocsInternalLinks(html: string, sourcePathToSlug: Map<string, string>): string {
+export interface InternalLinkOptions {
+  sourcePathToSlug: Map<string, string>;
+  // The first doc is served at /docs, not /docs/<slug> — links to it must match.
+  firstSlug: string | null;
+  repoOwner: string;
+  repoName: string;
+  repoBranch: string;
+}
+
+// Resolve a relative markdown link to a generated docs slug. The href shapes we
+// see in the wild include bare basenames (`cli.md`), docs-root-relative paths
+// (`reference/cli.md`), repo-root-relative paths from README (`docs/reference/cli.md`),
+// and parent-escaping paths (`../README.md`, `../../SECURITY.md`). Source-path map
+// keys are always docs-root-relative, so we normalise the href toward that and
+// match progressively from most to least specific.
+function resolveDocSlug(
+  hrefWithMd: string,
+  sourcePathToSlug: Map<string, string>
+): string | null {
+  // Strip leading `./` and any number of `../` segments — relative escapes can't
+  // be resolved precisely without per-link context, so we match on the remainder.
+  const stripped = hrefWithMd.replace(/^(?:\.\.?\/)+/, '');
+  // README links from repo root carry a `docs/` prefix the map keys don't have.
+  const candidates = [stripped];
+  if (stripped.startsWith('docs/')) candidates.push(stripped.slice('docs/'.length));
+
+  for (const candidate of candidates) {
+    const exact = sourcePathToSlug.get(candidate);
+    if (exact) return exact;
+  }
+
+  // Suffix match in either direction: handles bare basenames (`cli.md` vs the key
+  // `reference/cli.md`) and any residual prefix mismatch.
+  for (const candidate of candidates) {
+    for (const [sourcePath, slug] of sourcePathToSlug.entries()) {
+      if (sourcePath === candidate) return slug;
+      if (sourcePath.endsWith(`/${candidate}`) || candidate.endsWith(`/${sourcePath}`)) {
+        return slug;
+      }
+    }
+  }
+
+  // Basename match, but only when unambiguous.
+  const wantFile = stripped.split('/').pop();
+  if (wantFile) {
+    const matches = [...sourcePathToSlug.entries()].filter(
+      ([sourcePath]) => sourcePath.split('/').pop() === wantFile
+    );
+    if (matches.length === 1) return matches[0][1];
+  }
+
+  return null;
+}
+
+export function transformDocsInternalLinks(html: string, options: InternalLinkOptions): string {
+  const { sourcePathToSlug, firstSlug, repoOwner, repoName, repoBranch } = options;
+
   return html.replace(/href=(["'])([^"']+)\1/gi, (match, quote, href: string) => {
-    if (/^(https?:\/\/|\/|#)/i.test(href)) return match;
+    if (/^(https?:\/\/|\/|#|mailto:)/i.test(href)) return match;
 
     const [pathWithoutHash, hashFragment = ''] = href.split('#', 2);
     const hashSuffix = hashFragment ? `#${hashFragment}` : '';
     const cleanHref = pathWithoutHash.replace(/^\.\//, '');
-    const hrefWithMd = cleanHref.endsWith('.md') ? cleanHref : cleanHref + '.md';
-    
-    if (sourcePathToSlug.has(hrefWithMd)) {
-      return `href=${quote}/docs/${sourcePathToSlug.get(hrefWithMd)}${hashSuffix}${quote}`;
+    if (!cleanHref) return match;
+    const hrefWithMd = cleanHref.endsWith('.md') ? cleanHref : `${cleanHref}.md`;
+
+    const slug = resolveDocSlug(hrefWithMd, sourcePathToSlug);
+    if (slug) {
+      const base = firstSlug && slug === firstSlug ? '/docs' : `/docs/${slug}`;
+      return `href=${quote}${base}${hashSuffix}${quote}`;
     }
 
-    for (const [sourcePath, slug] of sourcePathToSlug.entries()) {
-      if (sourcePath.endsWith(hrefWithMd)) {
-        return `href=${quote}/docs/${slug}${hashSuffix}${quote}`;
-      }
+    // Unresolved markdown link (e.g. SECURITY.md, a doc not in the manifest):
+    // point at the source on GitHub rather than leaving a broken relative link.
+    if (/\.md$/i.test(cleanHref)) {
+      const repoPath = cleanHref.replace(/^(?:\.\.?\/)+/, '');
+      const githubUrl = `https://github.com/${repoOwner}/${repoName}/blob/${repoBranch}/${repoPath}${hashSuffix}`;
+      return `href=${quote}${githubUrl}${quote} target=${quote}_blank${quote} rel=${quote}noopener noreferrer${quote}`;
     }
 
     return match;

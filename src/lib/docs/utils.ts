@@ -103,6 +103,35 @@ export function sectionLabel(sectionId: string): string {
     .join(' ');
 }
 
+export function summarizeMarkdown(markdown: string, maxLength = 155): string {
+  const lines = markdown.split('\n');
+  const paragraph: string[] = [];
+  let inFence = false;
+
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (line.startsWith('```')) {
+      inFence = !inFence;
+      continue;
+    }
+    if (inFence) continue;
+    if (line.length === 0) {
+      if (paragraph.length > 0) break;
+      continue;
+    }
+    // Skip structural lines so the summary is the first real prose paragraph.
+    if (/^(#|>|\||<)/.test(line) || /^[-*+]\s/.test(line) || /^\d+\.\s/.test(line)) {
+      if (paragraph.length > 0) break;
+      continue;
+    }
+    paragraph.push(line);
+  }
+
+  const text = stripInlineMarkdown(paragraph.join(' ')).replace(/\s+/g, ' ').trim();
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength).replace(/\s+\S*$/, '')}…`;
+}
+
 export function titleFromMarkdown(markdown: string, sourcePath: string): string {
   const headingMatch = markdown.match(/^\s*#\s+(.+)\s*$/m);
   if (headingMatch?.[1]) {

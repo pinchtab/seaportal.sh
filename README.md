@@ -80,7 +80,7 @@ seaportal.sh/
 
 The site includes a full documentation system that loads from the main SeaPortal repository:
 
-- Documentation is fetched from `https://github.com/seaportal/seaportal` (main branch, `/docs` folder)
+- Documentation is fetched from `https://github.com/pinchtab/seaportal` (main branch, `/docs` folder)
 - Supports Markdown, including API references (JSON)
 - Automatic sidebar generation with accordion sections
 - Table of contents on the right
@@ -119,10 +119,10 @@ The site deploys to GitHub Pages via the `deploy.yml` workflow:
 
 ## License
 
-MIT License — See LICENSE in the seaportal/seaportal repository
+MIT License — See LICENSE in the pinchtab/seaportal repository
 
 ## Contributing
 
-This is the public website for SeaPortal. For the main project, see [seaportal/seaportal](https://github.com/seaportal/seaportal).
+This is the public website for SeaPortal. For the main project, see [pinchtab/seaportal](https://github.com/pinchtab/seaportal).
 
 Built by [Luigi Agosti](https://github.com/luigi-agosti) with help from AI agents.
