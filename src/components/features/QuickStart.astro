@@ -7,7 +7,7 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
   <SectionHeading
     label="Quick Start"
     title="Up and running in seconds"
-    description="Install, point at a URL, get structured content back. Works with any AI agent or directly via curl."
+    description="Install the binary, point it at a URL, get clean content back. No server to host, no browser to drive."
   />
 
   <CodeTerminal
@@ -18,9 +18,45 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
         code: '# Install via npm\nnpm install -g seaportal',
       },
       {
-        label: 'curl',
-        method: 'curl',
-        code: '# Extract content from a URL\ncurl -s https://seaportal.sh/extract?url=https://example.com',
+        label: 'Go',
+        method: 'go',
+        code: '# Install via Go\ngo install github.com/pinchtab/seaportal/cmd/seaportal@latest',
+      },
+      {
+        label: 'Run',
+        method: 'run',
+        code: [
+          '# Extract a page as Markdown',
+          'seaportal https://example.com',
+          '',
+          '# ---',
+          '# title: "Example Domain"',
+          '# url: https://example.com',
+          '# confidence: 92',
+          '# isSpa: false',
+          '# pageClass: static',
+          '# needsBrowser: false',
+          '# ---',
+          '#',
+          '# # Example Domain',
+          '# This domain is for use in illustrative examples...',
+        ].join('\n'),
+      },
+      {
+        label: 'JSON',
+        method: 'json',
+        code: [
+          '# Same fetch, machine-readable — branch on the profile',
+          'seaportal --json https://example.com',
+          '',
+          '# {',
+          '#   "title": "Example Domain",',
+          '#   "confidence": 92,',
+          '#   "isSpa": false,',
+          '#   "pageClass": "static",',
+          '#   "profile": { "decision": "static-ok", "browserRecommended": false }',
+          '# }',
+        ].join('\n'),
       },
     ]}
     defaultTab="npm"

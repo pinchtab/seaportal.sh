@@ -7,28 +7,28 @@ import SectionHeading from '@/components/ui/SectionHeading.astro';
   <SectionHeading
     label="Architecture"
     title="Simple by design"
-    description="One service. HTTP API. Extraction, summarization, and caching in one call."
+    description="One binary, one extraction engine. There is no service to host — drive it from the command line, embed the Go library, or run it as an MCP server."
   />
 
   <CodeTerminal
     tabs={[
       {
-        label: 'Extract',
-        method: 'extract',
-        code: '# Extract content from a URL\ncurl -s https://seaportal.sh/extract?url=https://example.com',
+        label: 'CLI',
+        method: 'cli',
+        code: '# Markdown (default), JSON, or an accessibility tree\nseaportal https://example.com\nseaportal --json https://example.com\nseaportal --snapshot https://example.com',
       },
       {
-        label: 'Summarize',
-        method: 'summarize',
-        code: '# Summarize a page\ncurl -s https://seaportal.sh/summarize?url=https://example.com',
+        label: 'Go library',
+        method: 'go',
+        code: 'import "github.com/pinchtab/seaportal"\n\nresult := seaportal.FromURL("https://example.com")\nfmt.Println(result.Content) // extracted Markdown',
       },
       {
-        label: 'Stream',
-        method: 'stream',
-        code: '# Stream extraction results\ncurl -N https://seaportal.sh/extract?url=https://example.com&stream=true',
+        label: 'MCP',
+        method: 'mcp',
+        code: '# Run as an MCP server over stdio\nseaportal mcp',
       },
     ]}
-    defaultTab="extract"
-    terminalLabel="runtime"
+    defaultTab="cli"
+    terminalLabel="seaportal"
   />
 </section>

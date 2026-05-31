@@ -1,0 +1,79 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const rows = [
+  {
+    aspect: 'Output',
+    fetch: 'The whole page — nav, ads, scripts, boilerplate.',
+    seaportal: 'Readable Markdown with the noise stripped, plus block and near-duplicate (simhash) dedupe.',
+  },
+  {
+    aspect: 'Acting on the page',
+    fetch: 'Text only. No way to point at a button or field.',
+    seaportal: 'A semantic accessibility tree — every interactive element carries a ref (e1, e2…) and CSS selector.',
+  },
+  {
+    aspect: 'JavaScript-heavy sites',
+    fetch: 'Silently returns an empty shell.',
+    seaportal: 'HTTP-first triage that flags when a page genuinely needs a browser — --fast bails early instead of guessing.',
+  },
+  {
+    aspect: 'Relevance & size',
+    fetch: 'You get everything, every time.',
+    seaportal: 'BM25 --query / --top-n scoring and a --max-tokens cap return only the sections that matter.',
+  },
+  {
+    aspect: 'Beyond one URL',
+    fetch: 'One page per call.',
+    seaportal: 'Flatten a sitemap.xml or parse an RSS / Atom / JSON feed in a single command.',
+  },
+  {
+    aspect: 'Safety',
+    fetch: 'Happily resolves internal IPs and odd schemes.',
+    seaportal: 'SSRF / private-IP blocking and http(s)-only by default.',
+  },
+];
+---
+
+<section id="why">
+  <SectionHeading
+    label="Why SeaPortal"
+    title="More than a fetch"
+    description="Your agent can already pull a URL with a plain fetch (the web_fetch tool, curl, an HTTP client). The difference is what comes back — a raw page dump versus structured content it can reason about and act on."
+  />
+
+  <div class="overflow-hidden rounded-2xl border border-brand-border-subtle bg-brand-surface">
+    <div class="hidden grid-cols-[1fr_1.4fr_1.4fr] gap-px border-b border-brand-border-subtle bg-brand-border-subtle sm:grid">
+      <div class="bg-brand-surface px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">&nbsp;</div>
+      <div class="bg-brand-surface px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Plain URL fetch</div>
+      <div class="bg-brand-surface px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-accent">SeaPortal</div>
+    </div>
+
+    {
+      rows.map((row, index) => (
+        <div
+          class:list={[
+            'grid grid-cols-1 gap-px bg-brand-border-subtle sm:grid-cols-[1fr_1.4fr_1.4fr]',
+            index < rows.length - 1 ? 'border-b border-brand-border-subtle' : '',
+          ]}
+        >
+          <div class="bg-brand-surface px-5 pt-4 pb-1 text-sm font-semibold text-brand-text sm:py-4">
+            {row.aspect}
+          </div>
+          <div class="bg-brand-surface px-5 py-2 text-sm leading-6 text-brand-text-dim sm:py-4">
+            <span class="mr-1 text-brand-text-dim sm:hidden">Plain fetch:</span>
+            {row.fetch}
+          </div>
+          <div class="bg-brand-surface px-5 pt-2 pb-4 text-sm leading-6 text-brand-text-muted sm:py-4">
+            <span class="mr-1 font-semibold text-brand-accent sm:hidden">SeaPortal:</span>
+            {row.seaportal}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+
+  <p class="mt-4 text-sm leading-6 text-brand-text-dim">
+    Already wired for agents: run <code class="font-mono text-brand-text">seaportal mcp</code> and the same engine shows up as MCP tools.
+  </p>
+</section>

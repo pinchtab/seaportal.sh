@@ -1,0 +1,49 @@
+---
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+
+const commands = [
+  ['seaportal <url>', 'Extract a page as Markdown (the default verb)'],
+  ['seaportal --json <url>', 'Structured JSON output instead of Markdown'],
+  ['seaportal --snapshot <url>', 'Accessibility tree with element refs and selectors'],
+  ['seaportal --fast <url>', 'Bail early if the page needs a browser'],
+  ['seaportal --query "..." <url>', 'Rank sections by BM25 relevance (pair with --top-n)'],
+  ['seaportal sitemap <url>', 'Flatten a sitemap.xml (recurses indexes, .gz aware)'],
+  ['seaportal feed <url>', 'Parse RSS / Atom / JSON Feed into unified entries'],
+  ['seaportal mcp', 'Run as an MCP server over stdio'],
+];
+---
+
+<section id="commands">
+  <SectionHeading
+    label="Commands"
+    title="One binary, a handful of commands"
+    description="Extraction is the default verb; sitemap, feed, and mcp are subcommands. The full flag list lives in the CLI reference."
+  />
+
+  <div class="overflow-x-auto rounded-2xl border border-brand-border-subtle bg-brand-surface">
+    <table class="w-full min-w-[520px] border-collapse text-left text-sm">
+      <thead>
+        <tr class="border-b border-brand-border-subtle">
+          <th class="px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Command</th>
+          <th class="px-5 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-brand-text-dim">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          commands.map(([command, description], index) => (
+            <tr class={index < commands.length - 1 ? 'border-b border-brand-border-subtle' : ''}>
+              <td class="px-5 py-3 font-mono text-xs text-brand-text">
+                <code>{command}</code>
+              </td>
+              <td class="px-5 py-3 text-brand-text-muted">{description}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 text-sm leading-6 text-brand-text-dim">
+    See the <a href="/docs" class="text-brand-accent underline-offset-2 hover:underline">CLI reference</a> for every flag — output formats, dedupe, caching, retries, link/image/table extraction, and the security policy.
+  </p>
+</section>
