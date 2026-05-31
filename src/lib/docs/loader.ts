@@ -277,40 +277,57 @@ function isValidDocsConfig(value: unknown): value is DocsConfig {
   });
 }
 
+function readLocalDocsConfig(): { config: DocsConfig; localConfigPath: string } | null {
+  const localConfigPath = path.join(LOCAL_DOCS_PATH, 'index.json');
+  if (!fs.existsSync(localConfigPath)) return null;
+
+  const parsed = JSON.parse(fs.readFileSync(localConfigPath, 'utf-8'));
+  if (!isValidDocsConfig(parsed)) {
+    throw new Error(`Invalid index.json schema at ${localConfigPath}`);
+  }
+
+  return { config: parsed, localConfigPath };
+}
+
 export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: string; docsJsonUrl: string; docsBaseUrl: string }> {
-  if (USE_LOCAL_DOCS) {
-    const localConfigPath = path.join(LOCAL_DOCS_PATH, 'index.json');
-    if (fs.existsSync(localConfigPath)) {
-      const parsed = JSON.parse(fs.readFileSync(localConfigPath, 'utf-8'));
-      if (!isValidDocsConfig(parsed)) {
-        throw new Error(`Invalid index.json schema at ${localConfigPath}`);
-      }
-      return {
-        config: parsed,
-        branch: 'local',
-        docsJsonUrl: `file://${localConfigPath}`,
-        docsBaseUrl: `file://${LOCAL_DOCS_PATH}/`,
-      };
-    }
+  const localConfig = readLocalDocsConfig();
+
+  if (USE_LOCAL_DOCS && localConfig) {
+    return {
+      config: localConfig.config,
+      branch: 'local',
+      docsJsonUrl: `file://${localConfig.localConfigPath}`,
+      docsBaseUrl: `file://${LOCAL_DOCS_PATH}/`,
+    };
   }
 
   console.log(`[docs] loading manifest from branch "${DOCS_BRANCH}": ${DOCS_JSON_URL}`);
   const response = await fetch(DOCS_JSON_URL);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${DOCS_JSON_URL} (${response.status} ${response.statusText})`);
+  if (response.ok) {
+    const parsed = await response.json();
+    if (!isValidDocsConfig(parsed)) {
+      throw new Error(`Invalid index.json schema at ${DOCS_JSON_URL}`);
+    }
+
+    return {
+      config: parsed,
+      branch: DOCS_BRANCH,
+      docsJsonUrl: DOCS_JSON_URL,
+      docsBaseUrl: DOCS_JSON_URL.replace(/\/[^/]+$/, '/'),
+    };
   }
 
-  const parsed = await response.json();
-  if (!isValidDocsConfig(parsed)) {
-    throw new Error(`Invalid index.json schema at ${DOCS_JSON_URL}`);
+  if (!USE_LOCAL_DOCS && localConfig) {
+    console.warn(`[docs] remote manifest unavailable (${response.status} ${response.statusText}); falling back to local manifest ${localConfig.localConfigPath} while keeping remote docs content source`);
+    return {
+      config: localConfig.config,
+      branch: `${DOCS_BRANCH} (manifest fallback)` ,
+      docsJsonUrl: DOCS_JSON_URL,
+      docsBaseUrl: DOCS_JSON_URL.replace(/\/[^/]+$/, '/'),
+    };
   }
 
-  return {
-    config: parsed,
-    branch: DOCS_BRANCH,
-    docsJsonUrl: DOCS_JSON_URL,
-    docsBaseUrl: DOCS_JSON_URL.replace(/\/[^/]+$/, '/'),
-  };
+  throw new Error(`Failed to fetch ${DOCS_JSON_URL} (${response.status} ${response.statusText})`);
 }
 
 function parseHtmlIntoBlocks(html: string): ContentBlock[] {
