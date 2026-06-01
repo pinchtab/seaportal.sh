@@ -201,13 +201,14 @@ async function listDocsInGitHubDirectory(docsJsonUrl: string, folderPath: string
 async function expandDocSourceEntry(
   sectionId: string,
   rawSourcePath: string,
-  docsJsonUrl: string
+  docsJsonUrl: string,
+  useLocalDocs: boolean
 ): Promise<string[]> {
   const sourcePath = normalizeSourcePath(rawSourcePath);
   if (!isDirectoryWildcardEntry(sourcePath)) return [sourcePath];
 
   const folderPath = resolveWildcardDirectory(sectionId, sourcePath);
-  return USE_LOCAL_DOCS
+  return useLocalDocs
     ? listDocsInLocalDirectory(folderPath)
     : listDocsInGitHubDirectory(docsJsonUrl, folderPath);
 }
@@ -231,11 +232,12 @@ function resolveDocSourceCandidates(docsBaseUrl: string, repoBaseUrl: string, so
 export async function fetchDocFromCandidates(
   docsBaseUrl: string,
   repoBaseUrl: string,
-  sourcePath: string
+  sourcePath: string,
+  useLocalDocs: boolean
 ): Promise<{ sourceUrl: string; content: string }> {
   const safePath = normalizeSourcePath(sourcePath);
 
-  if (USE_LOCAL_DOCS) {
+  if (useLocalDocs) {
     const localCandidates = [
       path.join(LOCAL_DOCS_PATH, safePath),
       path.join(path.dirname(LOCAL_DOCS_PATH), safePath),
@@ -291,7 +293,7 @@ function readLocalDocsConfig(): { config: DocsConfig; localConfigPath: string } 
   return { config: parsed, localConfigPath };
 }
 
-export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: string; docsJsonUrl: string; docsBaseUrl: string }> {
+export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: string; docsJsonUrl: string; docsBaseUrl: string; isLocal: boolean }> {
   const localConfig = readLocalDocsConfig();
 
   if (USE_LOCAL_DOCS && localConfig) {
@@ -300,6 +302,7 @@ export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: s
       branch: 'local',
       docsJsonUrl: `file://${localConfig.localConfigPath}`,
       docsBaseUrl: `file://${LOCAL_DOCS_PATH}/`,
+      isLocal: true,
     };
   }
 
@@ -316,6 +319,9 @@ export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: s
       branch: DOCS_BRANCH,
       docsJsonUrl: DOCS_JSON_URL,
       docsBaseUrl: DOCS_JSON_URL.replace(/\/[^/]+$/, '/'),
+      // Manifest came from the remote repo; wildcard expansion and content must
+      // resolve against the remote too (the local docs tree is absent here).
+      isLocal: false,
     };
   }
 
@@ -326,6 +332,7 @@ export async function fetchDocsConfig(): Promise<{ config: DocsConfig; branch: s
       branch: `${DOCS_BRANCH} (manifest fallback)` ,
       docsJsonUrl: DOCS_JSON_URL,
       docsBaseUrl: DOCS_JSON_URL.replace(/\/[^/]+$/, '/'),
+      isLocal: false,
     };
   }
 
@@ -380,7 +387,7 @@ function parseHtmlIntoBlocks(html: string): ContentBlock[] {
 
 export async function loadDocsFromRemote(): Promise<DocsData> {
   const markdownProcessor = await getMarkdownProcessor();
-  const { config, branch, docsJsonUrl, docsBaseUrl } = await fetchDocsConfig();
+  const { config, branch, docsJsonUrl, docsBaseUrl, isLocal } = await fetchDocsConfig();
   const repoBaseUrl = buildRepoBaseUrl(docsJsonUrl);
 
   console.log(`[docs] resolved docs source: branch=${branch} manifest=${docsJsonUrl}`);
@@ -397,7 +404,7 @@ export async function loadDocsFromRemote(): Promise<DocsData> {
 
     for (const rawSourcePath of entryList) {
       try {
-        const sourcePaths = await expandDocSourceEntry(sectionId, rawSourcePath, docsJsonUrl);
+        const sourcePaths = await expandDocSourceEntry(sectionId, rawSourcePath, docsJsonUrl, isLocal);
 
         for (const sourcePath of sourcePaths) {
           if (isTemporarilySkippedDoc(sourcePath) || seenSectionSourcePaths.has(sourcePath)) continue;
@@ -405,7 +412,7 @@ export async function loadDocsFromRemote(): Promise<DocsData> {
 
           let page = sourcePathToPage.get(sourcePath);
           if (!page) {
-            const { sourceUrl, content: rawContent } = await fetchDocFromCandidates(docsBaseUrl, repoBaseUrl, sourcePath);
+            const { sourceUrl, content: rawContent } = await fetchDocFromCandidates(docsBaseUrl, repoBaseUrl, sourcePath, isLocal);
             const content = isApiReferenceJson(sourcePath)
               ? buildApiReferenceMarkdown(rawContent, sourcePath)
               : rawContent;
