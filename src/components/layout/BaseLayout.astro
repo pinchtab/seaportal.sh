@@ -76,6 +76,15 @@ const structuredData = {
     <meta name="theme-color" content="#22d3ee" />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <title>{title}</title>
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-6Q265B4QBB"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-6Q265B4QBB');
+    </script>
   </head>
   <body class="min-h-screen flex flex-col">
     <main class={`flex-1 ${pageClass || ''}`}>
