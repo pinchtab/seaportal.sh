@@ -16,7 +16,7 @@ const {
   description = 'SeaPortal turns static and server-rendered pages into clean Markdown or a semantic accessibility tree for AI agents. HTTP-first, no browser required. CLI, Go library, and MCP server.',
   class: pageClass,
   canonical,
-  ogImage = '/og-image.png',
+  ogImage = '/og-image.jpg',
   ogType = 'website',
 } = Astro.props;
 
@@ -62,8 +62,9 @@ const structuredData = {
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="720" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
